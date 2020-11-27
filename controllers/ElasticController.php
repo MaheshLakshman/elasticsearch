@@ -12,6 +12,11 @@ class ElasticController
     {
         $this->client = ClientBuilder::create()->build();
     }
+    /**
+     * Index a document
+     *
+     * @return void
+     */
     public function create()
     {
         try {
@@ -37,7 +42,11 @@ class ElasticController
             exit;
         }
     }
-
+    /**
+     * Get a Document
+     *
+     * @return void
+     */
     public function get()
     {
         $params = [
@@ -52,7 +61,11 @@ class ElasticController
         echo "</pre>";
         exit;
     }
-
+    /**
+     * Search for a document
+     *
+     * @return void
+     */
     public function search()
     {
         $params = [
@@ -65,8 +78,61 @@ class ElasticController
                 ]
             ]
         ];
-        
+
         $response = $this->client->search($params);
+        echo "<pre>";
+        print_r($response);
+        echo "</pre>";
+        exit;
+    }
+    /**
+     * Delete a Document
+     *
+     * @return void
+     */
+    public function delete()
+    {
+        $params = [
+            'index' => 'first_index',
+            'id'    => 'first_id'
+        ];
+        
+        $response = $this->client->delete($params);
+        echo "<pre>";
+        print_r($response);
+        echo "</pre>";
+        exit;
+    }
+    /**
+     * Delete an index
+     *
+     * @return void
+     */
+    public function deleteIndex()
+    {
+        $deleteParams = [
+            'index' => 'first_index'
+        ];
+        $response = $this->client->indices()->delete($deleteParams);
+        echo "<pre>";
+        print_r($response);
+        echo "</pre>";
+        exit;
+    }
+
+    public function createIndex()
+    {
+        $params = [
+            'index' => 'first_index',
+            'body'  => [
+                'settings' => [
+                    'number_of_shards' => 2,
+                    'number_of_replicas' => 0
+                ]
+            ]
+        ];
+        
+        $response = $this->client->indices()->create($params);
         echo "<pre>";
         print_r($response);
         echo "</pre>";
