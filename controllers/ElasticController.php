@@ -119,7 +119,11 @@ class ElasticController
         echo "</pre>";
         exit;
     }
-
+    /**
+     * Create an index with custom settings without data 
+     *
+     * @return void
+     */
     public function createIndex()
     {
         $params = [
